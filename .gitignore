@@ -1,5 +1,6 @@
 .DS_Store
-.idea/shelf
+.idea
+.gitattributes
 /confluence/target
 /dependencies/repo
 /android.tests.dependencies
@@ -63,3 +64,9 @@ buildSrcTmp/
 distTmp/
 outTmp/
 
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
