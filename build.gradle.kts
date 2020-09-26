@@ -1,8 +1,6 @@
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_JAVA
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
 import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 
 buildscript {
     repositories {
@@ -32,7 +30,7 @@ detekt {
 }
 
 allprojects {
-    group = "com.github.raphaelpanta.partiners"
+    group = "com.github.raphaelpanta.partners"
     version = "1.0.0"
 
     repositories {
@@ -109,16 +107,4 @@ val detektAll by tasks.registering(Detekt::class) {
     reports {
         html.enabled = true
     }
-}
-
-val detektProjectBaseline by tasks.registering(DetektCreateBaselineTask::class) {
-    description = "Overrides current baseline."
-    buildUponDefaultConfig.set(true)
-    ignoreFailures.set(true)
-    parallel.set(true)
-    setSource(analysisDir)
-    include(kotlinFiles)
-    include(kotlinScriptFiles)
-    exclude(resourceFiles)
-    exclude(buildFiles)
 }
