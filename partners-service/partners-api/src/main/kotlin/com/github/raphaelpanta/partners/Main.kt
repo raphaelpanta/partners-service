@@ -13,7 +13,8 @@ fun main() {
 
     app.post("/partners") {
         it.status(201)
-        it.json(CreatePartnerRequest(
+        it.json(CreatePartnerResponse(
+                id = 1,
                 "Adega da Cerveja - Pinheiros",
                 "Zé da Silva",
                 "1432132123891/0001",

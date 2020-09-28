@@ -1,13 +1,11 @@
 package com.github.raphaelpanta.partners
 
-import io.javalin.http.contentTypeWrap
 import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.runBlocking
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
-import strikt.assertions.isSameInstanceAs
 
 class PartnerServiceDriver {
 
@@ -23,11 +21,11 @@ class PartnerServiceDriver {
 
     fun processRequest(request: CreatePartnerRequest) {
         runBlocking {
-            val response = client.post<CreatePartnerRequest>("http://localhost:7000/partners/"){
+            val response = client.post<CreatePartnerResponse>("http://localhost:7000/partners/") {
                 body = request
                 headers.append("Content-Type", "application/json")
             }
-            expectThat(response).isEqualTo(request)
+            expectThat(response).isEqualTo(createPartnerResponse)
         }
     }
 }
