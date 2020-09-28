@@ -1,6 +1,6 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_JAVA
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
-import io.gitlab.arturbosch.detekt.Detekt
 
 buildscript {
     repositories {
@@ -18,6 +18,7 @@ plugins {
     base
     kotlin("jvm") version "1.4.10"
     id("io.gitlab.arturbosch.detekt").version("1.14.0")
+    jacoco
 }
 
 detekt {
@@ -26,6 +27,7 @@ detekt {
 
     reports {
         html.enabled = true
+        reportsDir = file("$buildDir/jacoco/reports")
     }
 }
 
@@ -51,11 +53,12 @@ allprojects {
     }
 }
 
+
 subprojects {
     apply {
         plugin("io.gitlab.arturbosch.detekt")
+        plugin("jacoco")
     }
-
 
     detekt {
         input = objects.fileCollection().from(
@@ -70,6 +73,24 @@ subprojects {
         reports {
             html.enabled = true
         }
+    }
+
+    jacoco {
+        toolVersion = "0.8.6"
+        reportsDir = file("$buildDir/jacoco/reports")
+    }
+
+    tasks.withType<Detekt> {
+        exclude("resources/")
+        exclude("build/")
+    }
+
+    tasks.withType<Test> {
+        finalizedBy(tasks.withType<JacocoReport>())
+    }
+
+    tasks.withType<JacocoReport> {
+        dependsOn(tasks.withType<Test>())
     }
 }
 
@@ -108,3 +129,26 @@ val detektAll by tasks.registering(Detekt::class) {
         html.enabled = true
     }
 }
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.5".toBigDecimal()
+            }
+        }
+
+        rule {
+            enabled = false
+            element = "CLASS"
+            includes = listOf("org.gradle.*")
+
+            limit {
+                counter = "LINE"
+                value = "TOTALCOUNT"
+                maximum = "0.3".toBigDecimal()
+            }
+        }
+    }
+}
+
