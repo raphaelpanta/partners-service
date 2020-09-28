@@ -1,5 +1,6 @@
 package com.github.raphaelpanta.partners
 
+import io.cucumber.datatable.DataTable
 import io.cucumber.java8.En
 
 class CreatePartnerSteps() : En {
@@ -21,9 +22,8 @@ class CreatePartnerSteps() : En {
             user.inputDocument(document)
         }
 
-        Given("its coverage area is a {string} with coordinates {string}") { polygonType: String,
-                                                                             coordinates: String ->
-            user.inputCoverageArea(coordinates)
+        Given("its coverage area is a MultiPolygon with coordinates") { coordinates: DataTable ->
+            user.inputCoverageArea(coordinates.asLists(Double::class.java))
         }
 
         Given("its address is a {string} with coordinates [{double}, {double}]") { polygonType: String, long: Double, lat: Double ->
