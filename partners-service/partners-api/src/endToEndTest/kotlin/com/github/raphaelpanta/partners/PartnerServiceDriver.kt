@@ -1,5 +1,7 @@
 package com.github.raphaelpanta.partners
 
+import com.github.raphaelpanta.partners.service.CreatePartnerRequest
+import com.github.raphaelpanta.partners.service.CreatePartnerResponse
 import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*

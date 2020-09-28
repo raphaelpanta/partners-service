@@ -40,6 +40,7 @@ dependencies {
     implementation("de.grundid.opendatalab:geojson-jackson:1.14")
     implementation("io.javalin:javalin:3.10.1")
     implementation("org.slf4j:slf4j-simple:1.7.30")
+    implementation(project(":partners-service:application"))
 
     endToEndTestImplementation("io.cucumber:cucumber-java8:6.8.0")
     endToEndTestImplementation("io.cucumber:cucumber-junit-platform-engine:6.8.0")

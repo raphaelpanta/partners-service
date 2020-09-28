@@ -1,5 +1,6 @@
 package com.github.raphaelpanta.partners
 
+import com.github.raphaelpanta.partners.service.CreatePartnerRequest
 import io.javalin.apibuilder.ApiBuilder.path
 import io.javalin.apibuilder.ApiBuilder.post
 

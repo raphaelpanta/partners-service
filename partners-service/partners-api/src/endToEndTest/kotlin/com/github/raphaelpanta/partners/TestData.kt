@@ -1,5 +1,6 @@
 package com.github.raphaelpanta.partners
 
+import com.github.raphaelpanta.partners.service.CreatePartnerResponse
 import org.geojson.LngLatAlt
 import org.geojson.MultiPolygon
 import org.geojson.Point
