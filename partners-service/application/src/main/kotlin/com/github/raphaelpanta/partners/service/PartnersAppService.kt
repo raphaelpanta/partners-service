@@ -1,35 +1,20 @@
 package com.github.raphaelpanta.partners.service
 
-import org.geojson.LngLatAlt
-import org.geojson.MultiPolygon
-import org.geojson.Point
-import org.geojson.Polygon
+import com.github.raphaelpanta.partners.domain.Partner
+import com.github.raphaelpanta.partners.domain.PartnersRepository
 
-class PartnersAppService : PartnerService {
+
+class PartnersAppService(private val partnersRepository: PartnersRepository) : PartnerService {
     override fun create(createPartnerRequest: CreatePartnerRequest): CreatePartnerResponse {
-        return CreatePartnerResponse(
-                id = 1,
-                "Adega da Cerveja - Pinheiros",
-                "Zé da Silva",
-                "1432132123891/0001",
-                MultiPolygon()
-                        .add(
-                                Polygon(
-                                        LngLatAlt(30.0, 20.0),
-                                        LngLatAlt(45.0, 40.0),
-                                        LngLatAlt(10.0, 40.0),
-                                        LngLatAlt(30.0, 20.0)
-                                )
-                        )
-                        .add(
-                                Polygon(
-                                        LngLatAlt(15.0, 5.0),
-                                        LngLatAlt(40.0, 10.0),
-                                        LngLatAlt(10.0, 20.0),
-                                        LngLatAlt(5.0, 10.0),
-                                        LngLatAlt(15.0, 5.0)
-                                )),
-                Point(-46.57421, -21.785741)
-        )
+        return partnersRepository.create(createPartnerRequest.toPartner()).toResponse()
     }
 }
+
+fun CreatePartnerRequest.toPartner() =
+        Partner(null, tradingName, ownerName, document, coverageArea, address)
+
+fun Partner.toResponse() = CreatePartnerResponse(
+        id ?: 0,
+        tradingName,
+        ownerName,
+        document, coverageArea, address)

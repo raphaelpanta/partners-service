@@ -9,4 +9,5 @@
 
 rootProject.name = "partners-service"
 
-include("partners-service:domain", "partners-service:application", "partners-service:partners-api")
+include("partners-service:domain", "partners-service:application", "partners-service:partners-api",
+        "partners-service:infrastructure")
