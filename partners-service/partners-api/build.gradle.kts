@@ -20,7 +20,7 @@ sourceSets {
     }
 }
 
-val endToEndTestTask = task<Test>("endToEndTest"){
+val endToEndTestTask = task<Test>("endToEndTest") {
     description = "Runs end to end test for partners-service"
     group = "verification"
     testClassesDirs = sourceSets["endToEndTest"].output.classesDirs
@@ -35,8 +35,13 @@ val endToEndTestImplementation: Configuration by configurations.getting {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("com.fasterxml.jackson.core:jackson-core:2.11.2")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2")
+    implementation("de.grundid.opendatalab:geojson-jackson:1.14")
+    
+
     endToEndTestImplementation("io.cucumber:cucumber-java8:6.8.0")
     endToEndTestImplementation("io.cucumber:cucumber-junit-platform-engine:6.8.0")
 }
 
-tasks.check { dependsOn(endToEndTestTask)}
+tasks.check { dependsOn(endToEndTestTask) }
