@@ -26,7 +26,7 @@ class CreatePartnerSteps() : En {
             user.inputCoverageArea(coordinates.asLists(Double::class.java))
         }
 
-        Given("its address is a {string} with coordinates [{double}, {double}]") { polygonType: String, long: Double, lat: Double ->
+        Given("its address is a Point with coordinates [{double}, {double}]") { long: Double, lat: Double ->
             user.inputAddress(long, lat)
         }
 

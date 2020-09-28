@@ -7,6 +7,7 @@ import io.ktor.client.request.*
 import kotlinx.coroutines.runBlocking
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import strikt.assertions.isSameInstanceAs
 
 class PartnerServiceDriver {
 

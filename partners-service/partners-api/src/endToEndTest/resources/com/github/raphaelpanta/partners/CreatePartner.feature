@@ -15,5 +15,5 @@ Feature: Creating a Partner
       | 10.0 | 20.0 |
       | 5.0  | 10.0 |
       | 15   | 5    |
-    And its address is a "Point" with coordinates [-46.57421, -21.785741]
+    And its address is a Point with coordinates [-46.57421, -21.785741]
     Then Partner should be created successfully
