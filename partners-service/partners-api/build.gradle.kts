@@ -38,10 +38,15 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-core:2.11.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2")
     implementation("de.grundid.opendatalab:geojson-jackson:1.14")
-    
+    implementation("io.javalin:javalin:3.10.1")
+    implementation("org.slf4j:slf4j-simple:1.7.30")
 
     endToEndTestImplementation("io.cucumber:cucumber-java8:6.8.0")
     endToEndTestImplementation("io.cucumber:cucumber-junit-platform-engine:6.8.0")
+    endToEndTestImplementation("io.ktor:ktor-client-cio-jvm:1.4.1")
+    endToEndTestImplementation("io.ktor:ktor-client-jackson:1.4.1")
+    endToEndTestImplementation("io.ktor:ktor-client-serialization-jvm:1.4.1")
+
 }
 
 tasks.check { dependsOn(endToEndTestTask) }

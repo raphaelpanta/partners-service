@@ -1,47 +1,39 @@
 package com.github.raphaelpanta.partners
 
 import io.cucumber.java8.En
-import org.geojson.MultiPolygon
-import org.geojson.Point
 
-class CreatePartnerSteps : En {
-    private val map = HashMap<String, Any>()
+class CreatePartnerSteps() : En {
+
+    private val user = UserDriver()
+
+    private val server = PartnerServiceDriver()
 
     init {
         Given("a partner named {string}") { name: String ->
-            map["tradingName"] = name
+            user.inputTradingName(name)
         }
 
         Given("its owner named {string}") { name: String ->
-            map["ownerName"] = name
+            user.inputOwnerName(name)
         }
 
         Given("its brazilian legal document is {string}") { document: String ->
-            map["document"] = document
+            user.inputDocument(document)
         }
 
         Given("its coverage area is a {string} with coordinates {string}") { polygonType: String,
-                                                                             coordenates: String ->
-
-            map["coverageArea"] = MultiPolygon()
+                                                                             coordinates: String ->
+            user.inputCoverageArea(coordinates)
         }
 
-        Given("its address is a {string} with coordinates {string}") { polygonType: String, coordenates: String ->
-            map["address"] = Point()
+        Given("its address is a {string} with coordinates [{double}, {double}]") { polygonType: String, long: Double, lat: Double ->
+            user.inputAddress(long, lat)
         }
 
         Then("Partner should be created successfully") {
-            val request = map.let {
-                CreatePartnerRequest(
-                        it["tradingName"] as String,
-                        it["ownerName"] as String,
-                        it["document"] as String,
-                        it["coverageArea"] as MultiPolygon,
-                        it["address"] as Point
-                )
-            }
+            val createPartner = user.requested()
 
-
+            server.processRequest(createPartner)
         }
     }
 }
