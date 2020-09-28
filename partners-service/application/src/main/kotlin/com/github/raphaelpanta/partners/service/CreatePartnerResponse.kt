@@ -1,4 +1,4 @@
-package com.github.raphaelpanta.partners
+package com.github.raphaelpanta.partners.service
 
 import org.geojson.MultiPolygon
 import org.geojson.Point
