@@ -5,7 +5,9 @@ import io.javalin.Javalin
 fun main() {
     val app = Javalin.create().start(7000)
 
-    app.routes(
-            PartnersRoutes::routes
-    )
+    val partnerController = PartnerController
+    val partnersRoutes = PartnersRoutes(partnerController)
+
+    app.routes(partnersRoutes::routes)
+
 }
