@@ -8,13 +8,7 @@ class PartnersRoutes(private val partnerController: PartnerController) {
 
     fun routes() = path("/partners") {
         post("/") {
-            val request = it.bodyAsClass(CreatePartnerRequest::class.java)
-            partnerController.create(request)?.apply {
-                it.status(201)
-                it.json(this)
-            } ?: run {
-                it.status(400)
-            }
+           partnerController.create(it)
         }
     }
 }

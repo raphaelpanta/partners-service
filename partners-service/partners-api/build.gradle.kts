@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":partners-service:domain"))
     implementation(project(":partners-service:infrastructure"))
 
+    testImplementation("io.mockk:mockk:1.10.2")
     endToEndTestImplementation("io.cucumber:cucumber-java8:6.8.0")
     endToEndTestImplementation("io.cucumber:cucumber-junit-platform-engine:6.8.0")
     endToEndTestImplementation("io.ktor:ktor-client-cio-jvm:1.4.1")
