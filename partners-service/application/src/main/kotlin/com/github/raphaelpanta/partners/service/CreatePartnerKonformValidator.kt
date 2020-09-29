@@ -3,6 +3,7 @@ package com.github.raphaelpanta.partners.service
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
+import com.github.raphaelpanta.partners.service.InvalidResult.ValidationErrorResult
 import io.konform.validation.Invalid
 import io.konform.validation.Valid
 import io.konform.validation.Validation
@@ -29,6 +30,6 @@ class CreatePartnerKonformValidator : CreatePartnerValidator {
     override fun validate(request: CreatePartnerRequest): Result<CreatePartnerRequest, InvalidResult> =
             when (val result = partnerValidation(request)) {
                 is Valid -> Ok(request)
-                is Invalid -> Err(InvalidResult(errors = result.errors.map { "${it.dataPath} - ${it.message}" }))
+                is Invalid -> Err(ValidationErrorResult(errors = result.errors.map { "${it.dataPath} - ${it.message}" }))
             }
 }

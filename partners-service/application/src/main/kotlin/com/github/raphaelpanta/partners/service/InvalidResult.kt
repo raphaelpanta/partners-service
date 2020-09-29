@@ -1,8 +1,6 @@
 package com.github.raphaelpanta.partners.service
 
-enum class ErrorType {
-    Validation,
-    Error
+sealed class InvalidResult(open val errors: List<String>) {
+    data class ValidationErrorResult(override val errors: List<String>) : InvalidResult(errors)
+    data class InternalErrorResult(override val errors: List<String>) : InvalidResult(errors)
 }
-
-data class InvalidResult(val errors: List<String>, val type: ErrorType = ErrorType.Validation)

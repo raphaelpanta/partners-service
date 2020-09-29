@@ -2,7 +2,8 @@ package com.github.raphaelpanta.partners
 
 import com.github.michaelbull.result.fold
 import com.github.raphaelpanta.partners.service.CreatePartnerRequest
-import com.github.raphaelpanta.partners.service.ErrorType
+import com.github.raphaelpanta.partners.service.InvalidResult.InternalErrorResult
+import com.github.raphaelpanta.partners.service.InvalidResult.ValidationErrorResult
 import com.github.raphaelpanta.partners.service.PartnerService
 import io.javalin.http.Context
 
@@ -16,7 +17,10 @@ class PartnerController(private val partnerService: PartnerService) {
                     context.status(201)
                     context.json(it)
                 }) {
-                    context.status(if (it.type == ErrorType.Error) 500 else 400)
+                    context.status(when (it) {
+                        is InternalErrorResult -> 500
+                        is ValidationErrorResult -> 400
+                    })
                     context.json(it)
                 }
     }

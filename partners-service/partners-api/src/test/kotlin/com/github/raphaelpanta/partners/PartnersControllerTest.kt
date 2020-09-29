@@ -2,7 +2,11 @@ package com.github.raphaelpanta.partners
 
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
-import com.github.raphaelpanta.partners.service.*
+import com.github.raphaelpanta.partners.service.CreatePartnerRequest
+import com.github.raphaelpanta.partners.service.CreatePartnerResponse
+import com.github.raphaelpanta.partners.service.InvalidResult.InternalErrorResult
+import com.github.raphaelpanta.partners.service.InvalidResult.ValidationErrorResult
+import com.github.raphaelpanta.partners.service.PartnerService
 import io.javalin.http.Context
 import io.mockk.confirmVerified
 import io.mockk.every
@@ -46,7 +50,7 @@ object PartnersControllerTest {
         val partner = mockk<CreatePartnerRequest>()
         val partnerService = mockk<PartnerService>()
         val partnerController = PartnerController(partnerService)
-        val result = Err(InvalidResult(listOf("a message")))
+        val result = Err(ValidationErrorResult(listOf("a message")))
 
         every { context.bodyAsClass(CreatePartnerRequest::class.java) } returns partner
         every { context.status(400) } returns context
@@ -72,7 +76,7 @@ object PartnersControllerTest {
         val partner = mockk<CreatePartnerRequest>()
         val partnerService = mockk<PartnerService>()
         val partnerController = PartnerController(partnerService)
-        val result = Err(InvalidResult(listOf("a message"), type = ErrorType.Error))
+        val result = Err(InternalErrorResult(listOf("a message")))
 
         every { context.bodyAsClass(CreatePartnerRequest::class.java) } returns partner
         every { context.status(500) } returns context
