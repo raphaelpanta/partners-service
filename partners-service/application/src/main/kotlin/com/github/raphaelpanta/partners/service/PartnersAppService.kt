@@ -1,13 +1,24 @@
 package com.github.raphaelpanta.partners.service
 
+import com.github.michaelbull.result.flatMap
+import com.github.michaelbull.result.map
+import com.github.michaelbull.result.mapError
 import com.github.raphaelpanta.partners.domain.Partner
 import com.github.raphaelpanta.partners.domain.PartnersRepository
 
 
-class PartnersAppService(private val partnersRepository: PartnersRepository) : PartnerService {
-    override fun create(createPartnerRequest: CreatePartnerRequest): CreatePartnerResponse? {
-        return partnersRepository.create(createPartnerRequest.toPartner())?.toResponse()
-    }
+class PartnersAppService(private val partnersRepository: PartnersRepository,
+                         private val createPartnerValidator: CreatePartnerValidator
+) : PartnerService {
+    override fun create(createPartnerRequest: CreatePartnerRequest) =
+            createPartnerValidator.validate(createPartnerRequest)
+                    .map(CreatePartnerRequest::toPartner)
+                    .flatMap {
+                        partnersRepository.create(it)
+                                .mapError { e -> InvalidResult(listOf(e.localizedMessage)) }
+                    }
+                    .map(Partner::toResponse)
+
 }
 
 fun CreatePartnerRequest.toPartner() =

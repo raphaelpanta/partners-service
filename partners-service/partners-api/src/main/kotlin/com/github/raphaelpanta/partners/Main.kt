@@ -1,6 +1,7 @@
 package com.github.raphaelpanta.partners
 
 import com.github.raphaelpanta.infrastructure.MongoDbPartnersRepository
+import com.github.raphaelpanta.partners.service.CreatePartnerKonformValidator
 import com.github.raphaelpanta.partners.service.PartnersAppService
 import io.javalin.Javalin
 import org.litote.kmongo.KMongo
@@ -11,7 +12,8 @@ fun main() {
     val port = System.getProperty("DB_PORT")
     val mongoClient = KMongo.createClient("mongodb://$host:$port")
     val partnersRepository = MongoDbPartnersRepository(mongoClient)
-    val partnerService = PartnersAppService(partnersRepository)
+    val createPartnerValidator = CreatePartnerKonformValidator()
+    val partnerService = PartnersAppService(partnersRepository, createPartnerValidator)
     val partnerController = PartnerController(partnerService)
     val partnersRoutes = PartnersRoutes(partnerController)
 

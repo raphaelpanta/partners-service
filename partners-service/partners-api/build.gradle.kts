@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":partners-service:application"))
     implementation(project(":partners-service:domain"))
     implementation(project(":partners-service:infrastructure"))
+    implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.9")
 
     testImplementation("io.mockk:mockk:1.10.2")
     endToEndTestImplementation("io.cucumber:cucumber-java8:6.8.0")
