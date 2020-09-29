@@ -4,7 +4,10 @@ import com.github.raphaelpanta.partners.service.CreatePartnerRequest
 import com.github.raphaelpanta.partners.service.CreatePartnerResponse
 import com.github.raphaelpanta.partners.service.PartnerService
 import io.javalin.http.Context
-import io.mockk.*
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verifyOrder
 import org.junit.jupiter.api.Test
 
 object PartnersControllerTest {
@@ -32,5 +35,32 @@ object PartnersControllerTest {
         }
 
         confirmVerified(context, partner, partnerResp, partnerService)
+    }
+
+    @Test
+    fun `Should not create a partner successfully`() {
+        val context = mockk<Context>()
+        val partner = mockk<CreatePartnerRequest>()
+        val partnerResp = """{
+                | "message": "Could not save partner"
+                |}""".trimMargin()
+        val partnerService = mockk<PartnerService>()
+        val partnerController = PartnerController(partnerService)
+
+        every { context.bodyAsClass(CreatePartnerRequest::class.java) } returns partner
+        every { context.status(400) } returns context
+        every { context.json(partnerResp) } returns context
+        every { partnerService.create(partner) } returns null
+
+        partnerController.create(context)
+
+        verifyOrder {
+            context.bodyAsClass(CreatePartnerRequest::class.java)
+            partnerService.create(partner)
+            context.status(400)
+            context.json(partnerResp)
+        }
+
+        confirmVerified(context, partner, partnerService)
     }
 }
