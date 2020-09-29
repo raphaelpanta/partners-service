@@ -1,6 +1,7 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_JAVA
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
     repositories {
@@ -51,6 +52,10 @@ allprojects {
                 events("passed", "skipped", "failed")
             }
         }
+    }
+
+    tasks.withType<KotlinCompile>().all {
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_14.toString()
     }
 }
 

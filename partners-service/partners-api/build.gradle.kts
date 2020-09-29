@@ -40,6 +40,7 @@ dependencies {
     implementation("de.grundid.opendatalab:geojson-jackson:1.14")
     implementation("io.javalin:javalin:3.10.1")
     implementation("org.slf4j:slf4j-simple:1.7.30")
+    implementation("org.litote.kmongo:kmongo:4.1.2")
     implementation(project(":partners-service:application"))
     implementation(project(":partners-service:domain"))
     implementation(project(":partners-service:infrastructure"))
@@ -49,7 +50,8 @@ dependencies {
     endToEndTestImplementation("io.ktor:ktor-client-cio-jvm:1.4.1")
     endToEndTestImplementation("io.ktor:ktor-client-jackson:1.4.1")
     endToEndTestImplementation("io.ktor:ktor-client-serialization-jvm:1.4.1")
-
+    endToEndTestImplementation("org.testcontainers:testcontainers:1.14.3")
+    endToEndTestImplementation("org.testcontainers:mongodb:1.14.3")
 }
 
 tasks.check { dependsOn(endToEndTestTask) }

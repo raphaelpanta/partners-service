@@ -7,7 +7,7 @@ import org.geojson.Point
 import org.geojson.Polygon
 
 val createPartnerResponse = CreatePartnerResponse(
-        id = 1,
+        id = "",
         "Adega da Cerveja - Pinheiros",
         "Zé da Silva",
         "1432132123891/0001",
