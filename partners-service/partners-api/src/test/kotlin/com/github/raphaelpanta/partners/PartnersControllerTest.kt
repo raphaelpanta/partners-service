@@ -24,7 +24,7 @@ object PartnersControllerTest {
 
         partnerController.create(context)
 
-        verify {
+        verifyOrder {
             context.bodyAsClass(CreatePartnerRequest::class.java)
             partnerService.create(partner)
             context.status(201)
