@@ -1,3 +1,8 @@
 package com.github.raphaelpanta.partners.service
 
-data class InvalidResult(val errors: List<String>)
+enum class ErrorType {
+    Validation,
+    Error
+}
+
+data class InvalidResult(val errors: List<String>, val type: ErrorType = ErrorType.Validation)

@@ -15,7 +15,7 @@ class PartnersAppService(private val partnersRepository: PartnersRepository,
                     .map(CreatePartnerRequest::toPartner)
                     .flatMap {
                         partnersRepository.create(it)
-                                .mapError { e -> InvalidResult(listOf(e.localizedMessage)) }
+                                .mapError { e -> InvalidResult(listOf(e.localizedMessage), type = ErrorType.Error) }
                     }
                     .map(Partner::toResponse)
 
