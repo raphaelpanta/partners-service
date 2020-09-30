@@ -104,7 +104,7 @@ class MongoDbPartnersRepositoryTest {
 
     @Test
     fun `should find nearest partner`() {
-        val result = repository.searchNearestPartnerForLocation(30.0f to 20.0f)
+        val result = repository.searchNearestPartner(30.0f to 20.0f)
 
         result.component2().let(::print)
         expectThat(result.component1()).isEqualTo(testPartner)
@@ -112,7 +112,7 @@ class MongoDbPartnersRepositoryTest {
 
     @Test
     fun `should not find nearest partner`() {
-        val result = repository.searchNearestPartnerForLocation(20.0f to 20.0f)
+        val result = repository.searchNearestPartner(20.0f to 20.0f)
 
         result.component2().let(::print)
         expectThat(result) {

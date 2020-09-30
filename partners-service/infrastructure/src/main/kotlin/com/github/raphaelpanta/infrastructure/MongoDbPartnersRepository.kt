@@ -23,7 +23,7 @@ class MongoDbPartnersRepository(mongoClient: MongoClient) : PartnersRepository {
         collection.findOne("{ id : \"${id}\"  }")
     }
 
-    override fun searchNearestPartnerForLocation(point: Pair<Float, Float>) = runCatching {
+    override fun searchNearestPartner(point: Pair<Float, Float>) = runCatching {
         point.let { (long, lat) ->
             collection.findOne("""{
                                 ${'$'}and: [

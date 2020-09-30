@@ -6,4 +6,6 @@ interface PartnerService {
     fun create(createPartnerRequest: CreatePartnerRequest): Result<PartnerResponse, InvalidResult>
 
     fun find(id: String): Result<PartnerResponse, InvalidResult>
+
+    fun nearestPartnerForLocation(coordinates: Pair<Float, Float>): Result<PartnerResponse, InvalidResult>
 }

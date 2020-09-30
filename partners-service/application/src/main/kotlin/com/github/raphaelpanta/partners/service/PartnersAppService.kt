@@ -2,7 +2,6 @@ package com.github.raphaelpanta.partners.service
 
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.map
 import com.github.michaelbull.result.mapError
@@ -24,15 +23,23 @@ class PartnersAppService(private val partnersRepository: PartnersRepository,
                     }
                     .map(Partner::toResponse)
 
-    override fun find(id: String): Result<PartnerResponse, InvalidResult> {
-        return partnerValidator.validate(id)
-                .flatMap {
-                    partnersRepository.find(it).mapError { e -> InternalErrorResult(listOf(e.localizedMessage)) }
-                }.flatMap {
-                    it?.let { Ok(it.toResponse()) }
-                            ?: Err(ValidationErrorResult(listOf("Partner not found")))
-                }
-    }
+    override fun find(id: String) = partnerValidator.validate(id)
+            .flatMap {
+                partnersRepository.find(it)
+                        .mapError { e -> InternalErrorResult(listOf(e.localizedMessage)) }
+            }
+            .flatMap {
+                it?.let { Ok(it.toResponse()) }
+                        ?: Err(ValidationErrorResult(listOf("Partner not found")))
+            }
+
+    override fun nearestPartnerForLocation(coordinates: Pair<Float, Float>) =
+            partnersRepository.searchNearestPartner(coordinates)
+                    .mapError { e -> InternalErrorResult(listOf(e.localizedMessage)) }
+                    .flatMap {
+                        it?.let { Ok(it.toResponse()) }
+                                ?: Err(ValidationErrorResult(listOf("Partner not found")))
+                    }
 
 }
 
