@@ -1,14 +1,11 @@
 package com.github.raphaelpanta.partners
 
-import com.github.raphaelpanta.partners.service.CreatePartnerRequest
-import io.javalin.apibuilder.ApiBuilder.path
-import io.javalin.apibuilder.ApiBuilder.post
+import io.javalin.apibuilder.ApiBuilder.*
 
 class PartnersRoutes(private val partnerController: PartnerController) {
 
     fun routes() = path("/partners") {
-        post("/") {
-           partnerController.create(it)
-        }
+        post("/", partnerController::create)
+        get("/:id", partnerController::find)
     }
 }

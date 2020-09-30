@@ -1,7 +1,7 @@
 package com.github.raphaelpanta.partners
 
 import com.github.raphaelpanta.partners.service.CreatePartnerRequest
-import com.github.raphaelpanta.partners.service.CreatePartnerResponse
+import com.github.raphaelpanta.partners.service.PartnerResponse
 import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
@@ -38,7 +38,7 @@ class PartnerServiceDriver {
 
     fun processRequest(request: CreatePartnerRequest) {
         runBlocking {
-            val response = client.post<CreatePartnerResponse>("http://localhost:7000/partners/") {
+            val response = client.post<PartnerResponse>("http://localhost:7000/partners/") {
                 body = request
                 headers.append("Content-Type", "application/json")
             }

@@ -4,7 +4,7 @@ import org.geojson.MultiPolygon
 import org.geojson.Point
 import java.util.*
 
-data class CreatePartnerResponse
+data class PartnerResponse
 (val id: String,
  val tradingName: String,
  val ownerName: String,

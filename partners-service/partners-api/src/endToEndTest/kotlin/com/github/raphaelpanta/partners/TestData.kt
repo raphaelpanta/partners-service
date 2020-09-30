@@ -1,12 +1,12 @@
 package com.github.raphaelpanta.partners
 
-import com.github.raphaelpanta.partners.service.CreatePartnerResponse
+import com.github.raphaelpanta.partners.service.PartnerResponse
 import org.geojson.LngLatAlt
 import org.geojson.MultiPolygon
 import org.geojson.Point
 import org.geojson.Polygon
 
-val createPartnerResponse = CreatePartnerResponse(
+val createPartnerResponse = PartnerResponse(
         id = "",
         "Adega da Cerveja - Pinheiros",
         "Zé da Silva",

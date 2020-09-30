@@ -3,9 +3,9 @@ package com.github.raphaelpanta.partners
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.raphaelpanta.partners.service.CreatePartnerRequest
-import com.github.raphaelpanta.partners.service.CreatePartnerResponse
 import com.github.raphaelpanta.partners.service.InvalidResult.InternalErrorResult
 import com.github.raphaelpanta.partners.service.InvalidResult.ValidationErrorResult
+import com.github.raphaelpanta.partners.service.PartnerResponse
 import com.github.raphaelpanta.partners.service.PartnerService
 import io.javalin.http.Context
 import io.mockk.confirmVerified
@@ -14,14 +14,14 @@ import io.mockk.mockk
 import io.mockk.verifyOrder
 import org.junit.jupiter.api.Test
 
-object PartnersControllerTest {
+class PartnersControllerTest {
 
     @Test
     fun `Should create a partner successfully`() {
         val context = mockk<Context>()
         val partner = mockk<CreatePartnerRequest>()
-        val partnerResp = mockk<Ok<CreatePartnerResponse>>()
-        val partnerResponse = mockk<CreatePartnerResponse>()
+        val partnerResp = mockk<Ok<PartnerResponse>>()
+        val partnerResponse = mockk<PartnerResponse>()
         val partnerService = mockk<PartnerService>()
         val partnerController = PartnerController(partnerService)
 
@@ -69,7 +69,6 @@ object PartnersControllerTest {
         confirmVerified(context, partner, partnerService)
     }
 
-
     @Test
     fun `Should not create a partner successfully due a internal server error`() {
         val context = mockk<Context>()
@@ -93,5 +92,94 @@ object PartnersControllerTest {
         }
 
         confirmVerified(context, partner, partnerService)
+    }
+
+}
+
+class PartnerFindTest {
+    @Test
+    fun `should find a partner by its id`() {
+        val id = "c9361281-ea43-42f0-8573-ec9cce65852d"
+        val context = mockk<Context>()
+        val partner = mockk<PartnerResponse>()
+        val partnerService = mockk<PartnerService>()
+        val partnerResponse = mockk<Ok<PartnerResponse>>()
+        val partnerController = PartnerController(partnerService)
+
+        every { partnerService.find(id) } returns partnerResponse
+        every { context.pathParam("id") } returns id
+        every { context.status(200) } returns context
+        every { context.json(partner) } returns context
+        every { partnerResponse.value } returns partner
+
+        partnerController.find(context)
+
+        verifyOrder {
+            context.pathParam(key = "id")
+            partnerService.find(id)
+            partnerResponse.value
+            context.status(200)
+            context.json(partner)
+        }
+
+        confirmVerified(partnerResponse, partnerService, context, partner, partnerResponse)
+    }
+
+    @Test
+    fun `should not find a partner by its id`() {
+        val id = "c9361281-ea43-42f0-8573-ec9cce65852d"
+        val context = mockk<Context>()
+        val partner = mockk<PartnerResponse>()
+        val partnerService = mockk<PartnerService>()
+        val partnerResponse = mockk<Err<ValidationErrorResult>>()
+        val validationErrorResult = ValidationErrorResult(listOf("Could not find any partner by id"))
+        val partnerController = PartnerController(partnerService)
+
+        every { partnerService.find(id) } returns partnerResponse
+        every { context.pathParam("id") } returns id
+        every { context.status(400) } returns context
+        every { partnerResponse.error } returns validationErrorResult
+        every { context.json(validationErrorResult) } returns context
+
+        partnerController.find(context)
+
+        verifyOrder {
+            context.pathParam(key = "id")
+            partnerService.find(id)
+            partnerResponse.error
+            context.status(400)
+            context.json(validationErrorResult)
+        }
+
+        confirmVerified(partnerResponse, partnerService, context, partner, partnerResponse)
+    }
+
+    @Test
+    fun `should not find a partner by its id from internal errors`() {
+        val id = "c9361281-ea43-42f0-8573-ec9cce65852d"
+        val context = mockk<Context>()
+        val partner = mockk<PartnerResponse>()
+        val partnerService = mockk<PartnerService>()
+        val partnerResponse = mockk<Err<InternalErrorResult>>()
+        val internalErrorResult = InternalErrorResult(listOf("Could not find any partner by id"))
+        val partnerController = PartnerController(partnerService)
+
+        every { partnerService.find(id) } returns partnerResponse
+        every { context.pathParam("id") } returns id
+        every { context.status(500) } returns context
+        every { partnerResponse.error } returns internalErrorResult
+        every { context.json(internalErrorResult) } returns context
+
+        partnerController.find(context)
+
+        verifyOrder {
+            context.pathParam(key = "id")
+            partnerService.find(id)
+            partnerResponse.error
+            context.status(500)
+            context.json(internalErrorResult)
+        }
+
+        confirmVerified(partnerResponse, partnerService, context, partner, partnerResponse)
     }
 }

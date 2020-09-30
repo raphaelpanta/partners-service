@@ -1,5 +1,6 @@
 package com.github.raphaelpanta.partners.service
 
+import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.map
 import com.github.michaelbull.result.mapError
@@ -20,12 +21,16 @@ class PartnersAppService(private val partnersRepository: PartnersRepository,
                     }
                     .map(Partner::toResponse)
 
+    override fun find(id: String): Result<PartnerResponse, InvalidResult> {
+        TODO("Not yet implemented")
+    }
+
 }
 
 fun CreatePartnerRequest.toPartner() =
         Partner(tradingName, ownerName, document, coverageArea, address)
 
-fun Partner.toResponse() = CreatePartnerResponse(
+fun Partner.toResponse() = PartnerResponse(
         id,
         tradingName,
         ownerName,
