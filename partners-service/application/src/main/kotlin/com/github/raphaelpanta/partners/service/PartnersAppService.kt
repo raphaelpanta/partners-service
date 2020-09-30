@@ -10,10 +10,10 @@ import com.github.raphaelpanta.partners.service.InvalidResult.InternalErrorResul
 
 
 class PartnersAppService(private val partnersRepository: PartnersRepository,
-                         private val createPartnerValidator: CreatePartnerValidator
+                         private val partnerValidator: PartnerValidator
 ) : PartnerService {
     override fun create(createPartnerRequest: CreatePartnerRequest) =
-            createPartnerValidator.validate(createPartnerRequest)
+            partnerValidator.validate(createPartnerRequest)
                     .map(CreatePartnerRequest::toPartner)
                     .flatMap {
                         partnersRepository.create(it)

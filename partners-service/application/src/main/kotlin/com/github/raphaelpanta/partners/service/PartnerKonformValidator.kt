@@ -10,8 +10,9 @@ import io.konform.validation.Validation
 import io.konform.validation.jsonschema.maxLength
 import io.konform.validation.jsonschema.minLength
 import io.konform.validation.jsonschema.pattern
+import java.util.*
 
-class CreatePartnerKonformValidator : CreatePartnerValidator {
+class PartnerKonformValidator : PartnerValidator {
 
     private val partnerValidation = Validation<CreatePartnerRequest> {
         CreatePartnerRequest::tradingName required {
@@ -32,4 +33,11 @@ class CreatePartnerKonformValidator : CreatePartnerValidator {
                 is Valid -> Ok(request)
                 is Invalid -> Err(ValidationErrorResult(errors = result.errors.map { "${it.dataPath} - ${it.message}" }))
             }
+
+    override fun validate(id: String): Result<UUID, InvalidResult> = try {
+        Ok(UUID.fromString(id))
+    } catch (e: IllegalArgumentException) {
+        Err(ValidationErrorResult(listOf(".id - should be a valid UUID")))
+    }
+
 }
