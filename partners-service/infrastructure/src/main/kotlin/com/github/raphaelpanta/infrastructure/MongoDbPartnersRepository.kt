@@ -22,4 +22,32 @@ class MongoDbPartnersRepository(mongoClient: MongoClient) : PartnersRepository {
     override fun find(id: UUID) = runCatching {
         collection.findOne("{ id : \"${id}\"  }")
     }
+
+    override fun searchNearestPartnerForLocation(point: Pair<Float, Float>) = runCatching {
+        point.let { (long, lat) ->
+            collection.findOne("""{
+                                ${'$'}and: [
+                                    {
+                                        address: {
+                                            ${'$'}geoNear: {
+                                                ${'$'}geometry: {
+                                                    type: "Point",
+                                                    coordinates: [$long, $lat]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        coverageArea: {
+                                            ${'$'}geoIntersects: {
+                                                ${'$'}geometry: {
+                                                    type: "Point",
+                                                    coordinates: [$long, $lat]
+                                                }
+                                            }
+                                        }
+                                    }]
+        }""")
+        }
+    }
 }

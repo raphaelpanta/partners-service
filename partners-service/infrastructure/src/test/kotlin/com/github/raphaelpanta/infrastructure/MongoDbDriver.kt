@@ -34,7 +34,8 @@ class MongoDbDriver {
             applyConnectionString(ConnectionString("mongodb://localhost:27017"))
         }.build())
 
-        mongoClient.getDatabase("partners").createCollection("partner")
+       MongoMigrations(mongoClient).runMigration()
+
     }
 
     fun stop() {

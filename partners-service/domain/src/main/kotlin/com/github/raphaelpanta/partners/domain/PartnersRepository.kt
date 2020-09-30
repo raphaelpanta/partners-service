@@ -7,4 +7,6 @@ interface PartnersRepository {
     fun create(partner: Partner): Result<Partner, Throwable>
 
     fun find(id: UUID): Result<Partner?, Throwable>
+
+    fun searchNearestPartnerForLocation(point: Pair<Float, Float>): Result<Partner?, Throwable>
 }

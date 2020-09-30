@@ -5,6 +5,8 @@ import com.github.raphaelpanta.partners.domain.Partner
 import com.github.raphaelpanta.partners.domain.PartnersRepository
 import com.github.raphaelpanta.partners.domain.Point
 import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import strikt.api.expectThat
@@ -14,6 +16,7 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MongoDbPartnersRepositoryTest {
     private val monogDbDriver = MongoDbDriver()
+
     private val repository: PartnersRepository = MongoDbPartnersRepository(monogDbDriver.mongoClient)
 
     private val testPartner = Partner(
@@ -47,21 +50,44 @@ class MongoDbPartnersRepositoryTest {
             Point(listOf(-46.57421, -21.785741), "Point")
     )
 
-    @Test
-    fun `should add a partner successfully`() {
-        val (partner) = repository.create(testPartner)
-        expectThat(partner).isEqualTo(testPartner)
+    @BeforeAll
+    fun addTest() {
+        repository.create(testPartner)
     }
 
     @Test
-    fun `should find partner`() {
-        val insertResult = repository.create(testPartner)
+    @Order(0)
+    fun `should add a partner successfully`() {
+        val test = testPartner.copy(
+                id = UUID.randomUUID().toString(),
+                document = "1432132123891/0002",
+                coverageArea = MultiPolygon(
+                        listOf(
+                                listOf(
+                                        listOf(
+                                                listOf(40.0f, 13.0f),
+                                                listOf(36.0f, 13.0f),
+                                                listOf(36.0f, 10.0f),
+                                                listOf(40.0f, 10.0f),
+                                                listOf(40.0f, 13.0f)
+                                        )
+                                )
+                        ), type = "MultiPolygon"
+                )
+        )
 
-        val result = insertResult.component1()?.id.let { repository.find(UUID.fromString(it)) }.component1()
+        val (partner) = repository.create(test)
+        expectThat(partner).isEqualTo(test)
+    }
+
+    @Test
+    @Order(1)
+    fun `should find partner`() {
+
+        val (result) = repository.find(UUID.fromString(testPartner.id))
 
         expectThat(result).isEqualTo(testPartner)
     }
-
 
     @Test
     fun `should not find partner`() {
@@ -76,6 +102,24 @@ class MongoDbPartnersRepositoryTest {
         }
     }
 
+    @Test
+    fun `should find nearest partner`() {
+        val result = repository.searchNearestPartnerForLocation(30.0f to 20.0f)
+
+        result.component2().let(::print)
+        expectThat(result.component1()).isEqualTo(testPartner)
+    }
+
+    @Test
+    fun `should not find nearest partner`() {
+        val result = repository.searchNearestPartnerForLocation(20.0f to 20.0f)
+
+        result.component2().let(::print)
+        expectThat(result) {
+            get { component1() } isEqualTo null
+            get { component2() } isEqualTo null
+        }
+    }
 
     @AfterAll
     fun teardown() {
