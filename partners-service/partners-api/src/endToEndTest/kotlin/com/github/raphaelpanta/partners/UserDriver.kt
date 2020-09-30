@@ -1,17 +1,16 @@
 package com.github.raphaelpanta.partners
 
+import com.github.raphaelpanta.partners.domain.MultiPolygon
+import com.github.raphaelpanta.partners.domain.Point
 import com.github.raphaelpanta.partners.service.CreatePartnerRequest
-import org.geojson.LngLatAlt
-import org.geojson.MultiPolygon
-import org.geojson.Point
-import org.geojson.Polygon
+
 
 class UserDriver {
     private val map = HashMap<String, Any>()
-    private val coverageArea = MultiPolygon()
+    private val coverageArea = mutableListOf<List<List<List<Float>>>>()
 
-    fun inputTradingName(tradindName: String) {
-        map["tradingName"] = tradindName
+    fun inputTradingName(tradingName: String) {
+        map["tradingName"] = tradingName
     }
 
     fun inputOwnerName(ownerName: String) {
@@ -23,13 +22,13 @@ class UserDriver {
     }
 
     fun inputAddress(long: Double, lat: Double) {
-        map["address"] = Point(long, lat)
+        map["address"] = Point(listOf(long, lat), "Point")
     }
 
-    fun inputCoverageArea(coordinates: List<List<Double>>) {
-        coverageArea.add(Polygon(
+    fun inputCoverageArea(coordinates: List<List<Float>>) {
+        coverageArea.add(listOf(
                 coordinates.map {
-                    LngLatAlt(it[0], it[1])
+                    listOf(it[0], it[1])
                 }
         ))
     }
@@ -39,7 +38,7 @@ class UserDriver {
                 it["tradingName"] as String,
                 it["ownerName"] as String,
                 it["document"] as String,
-                coverageArea,
+                MultiPolygon(coverageArea, "MultiPolygon"),
                 it["address"] as Point
         )
     }

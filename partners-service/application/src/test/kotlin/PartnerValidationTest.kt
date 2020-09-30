@@ -1,18 +1,18 @@
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
+import com.github.raphaelpanta.partners.domain.MultiPolygon
+import com.github.raphaelpanta.partners.domain.Point
 import com.github.raphaelpanta.partners.service.CreatePartnerRequest
 import com.github.raphaelpanta.partners.service.InvalidResult
 import com.github.raphaelpanta.partners.service.InvalidResult.ValidationErrorResult
 import com.github.raphaelpanta.partners.service.PartnerKonformValidator
-import org.geojson.MultiPolygon
-import org.geojson.Point
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
-import java.util.*
+import java.util.UUID
 
 class PartnerValidationTest {
 
@@ -20,8 +20,31 @@ class PartnerValidationTest {
             "tradingName",
             "ownerName",
             "1432132123891/0001",
-            MultiPolygon(),
-            Point()
+            MultiPolygon(
+                    listOf(
+                            listOf(
+
+                                    listOf(
+                                            listOf(30.0f, 20.0f),
+                                            listOf(45.0f, 40.0f),
+                                            listOf(10.0f, 40.0f),
+                                            listOf(30.0f, 20.0f)
+                                    )
+                            ),
+                            listOf(
+                                    listOf(
+                                            listOf(15.0f, 5.0f),
+                                            listOf(40.0f, 10.0f),
+                                            listOf(10.0f, 20.0f),
+                                            listOf(5.0f, 10.0f),
+                                            listOf(15.0f, 5.0f)
+                                    )
+
+                            )
+                    ),
+                    "MultiPolygon"
+            ),
+            Point(listOf(-46.57421, -21.785741), "Point")
     )
 
     private val partnerValidator = PartnerKonformValidator()

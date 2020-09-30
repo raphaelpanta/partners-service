@@ -37,7 +37,6 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("com.fasterxml.jackson.core:jackson-core:2.11.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2")
-    implementation("de.grundid.opendatalab:geojson-jackson:1.14")
     implementation("io.javalin:javalin:3.10.1")
     implementation("org.slf4j:slf4j-simple:1.7.30")
     implementation("org.litote.kmongo:kmongo:4.1.2")

@@ -1,32 +1,36 @@
 package com.github.raphaelpanta.partners
 
+import com.github.raphaelpanta.partners.domain.MultiPolygon
+import com.github.raphaelpanta.partners.domain.Point
 import com.github.raphaelpanta.partners.service.PartnerResponse
-import org.geojson.LngLatAlt
-import org.geojson.MultiPolygon
-import org.geojson.Point
-import org.geojson.Polygon
 
 val createPartnerResponse = PartnerResponse(
         id = "",
         "Adega da Cerveja - Pinheiros",
         "Zé da Silva",
         "1432132123891/0001",
-        MultiPolygon()
-                .add(
-                        Polygon(
-                                LngLatAlt(30.0, 20.0),
-                                LngLatAlt(45.0, 40.0),
-                                LngLatAlt(10.0, 40.0),
-                                LngLatAlt(30.0, 20.0)
+        MultiPolygon(
+
+                listOf(
+                        listOf(
+                                listOf(
+                                        listOf(30.0f, 20.0f),
+                                        listOf(45.0f, 40.0f),
+                                        listOf(10.0f, 40.0f),
+                                        listOf(30.0f, 20.0f)
+                                )
+                        ),
+                        listOf(
+                                listOf(
+                                        listOf(15.0f, 5.0f),
+                                        listOf(40.0f, 10.0f),
+                                        listOf(10.0f, 20.0f),
+                                        listOf(5.0f, 10.0f),
+                                        listOf(15.0f, 5.0f)
+                                )
                         )
-                )
-                .add(
-                        Polygon(
-                                LngLatAlt(15.0, 5.0),
-                                LngLatAlt(40.0, 10.0),
-                                LngLatAlt(10.0, 20.0),
-                                LngLatAlt(5.0, 10.0),
-                                LngLatAlt(15.0, 5.0)
-                        )),
-        Point(-46.57421, -21.785741)
+                ),
+                "MultiPolygon"
+        ),
+        Point(listOf(-46.57421, -21.785741), "Point")
 )

@@ -1,8 +1,7 @@
 package com.github.raphaelpanta.partners.service
 
-import org.geojson.MultiPolygon
-import org.geojson.Point
-import java.util.*
+import com.github.raphaelpanta.partners.domain.MultiPolygon
+import com.github.raphaelpanta.partners.domain.Point
 
 data class PartnerResponse
 (val id: String,

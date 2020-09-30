@@ -2,9 +2,13 @@ package com.github.raphaelpanta.partners
 
 import com.github.raphaelpanta.partners.service.CreatePartnerRequest
 import com.github.raphaelpanta.partners.service.PartnerResponse
-import io.ktor.client.*
-import io.ktor.client.features.json.*
-import io.ktor.client.request.*
+import io.ktor.client.HttpClient
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.defaultSerializer
+import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.content.ByteArrayContent
+import io.ktor.http.ContentType
 import kotlinx.coroutines.runBlocking
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.containers.wait.strategy.Wait
@@ -45,4 +49,16 @@ class PartnerServiceDriver {
             expectThat(response.copy(id = "")).isEqualTo(createPartnerResponse)
         }
     }
+
+    fun insertPartner(request: String) = runBlocking {
+        val response = client.post<PartnerResponse>("http://localhost:7000/partners/") {
+            body = ByteArrayContent(request.toByteArray(), ContentType.Application.Json)
+        }
+        response.id
+    }
+
+    fun queryPartner(id: String) = runBlocking {
+        client.get<PartnerResponse>("http://localhost:7000/partners/$id")
+    }
+
 }

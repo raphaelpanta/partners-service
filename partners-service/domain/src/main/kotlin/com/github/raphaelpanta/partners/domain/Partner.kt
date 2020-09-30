@@ -1,8 +1,6 @@
 package com.github.raphaelpanta.partners.domain
 
-import org.geojson.MultiPolygon
-import org.geojson.Point
-import java.util.*
+import java.util.UUID
 
 data class Partner(
         val tradingName: String,

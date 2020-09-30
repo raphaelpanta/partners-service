@@ -1,5 +1,6 @@
 package com.github.raphaelpanta.partners
 
+import com.github.raphaelpanta.partners.CreatePartnerTest.Companion.server
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.En
 
@@ -7,7 +8,6 @@ class CreatePartnerSteps() : En {
 
     private val user = UserDriver()
 
-    private val server = PartnerServiceDriver()
 
     init {
         Given("a partner named {string}") { name: String ->
@@ -23,7 +23,7 @@ class CreatePartnerSteps() : En {
         }
 
         Given("its coverage area is a MultiPolygon with coordinates") { coordinates: DataTable ->
-            user.inputCoverageArea(coordinates.asLists(Double::class.java))
+            user.inputCoverageArea(coordinates.asLists(Float::class.java))
         }
 
         Given("its address is a Point with coordinates [{double}, {double}]") { long: Double, lat: Double ->

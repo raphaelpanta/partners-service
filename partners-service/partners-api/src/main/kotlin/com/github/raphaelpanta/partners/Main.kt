@@ -1,13 +1,19 @@
 package com.github.raphaelpanta.partners
 
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.MapperFeature
+import com.fasterxml.jackson.databind.module.SimpleModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.github.raphaelpanta.infrastructure.MongoDbPartnersRepository
 import com.github.raphaelpanta.partners.service.PartnerKonformValidator
 import com.github.raphaelpanta.partners.service.PartnersAppService
 import io.javalin.Javalin
+import io.javalin.plugin.json.JavalinJackson
 import org.litote.kmongo.KMongo
 
 fun main() {
-    val app = Javalin.create().start(7000)
+
     val host = System.getProperty("DB_HOST")
     val port = System.getProperty("DB_PORT")
     val mongoClient = KMongo.createClient("mongodb://$host:$port")
@@ -17,6 +23,13 @@ fun main() {
     val partnerController = PartnerController(partnerService)
     val partnersRoutes = PartnersRoutes(partnerController)
 
-    app.routes(partnersRoutes::routes)
+    JavalinJackson.configure(jacksonObjectMapper()
+            .registerModule(SimpleModule())
+            .configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, true)
+            .configure(MapperFeature.ALLOW_COERCION_OF_SCALARS, true)
+            .registerKotlinModule())
+    Javalin.create()
+            .routes(partnersRoutes::routes)
+            .start(7000)
 
 }

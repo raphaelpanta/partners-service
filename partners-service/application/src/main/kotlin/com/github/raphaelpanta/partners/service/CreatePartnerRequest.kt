@@ -1,7 +1,7 @@
 package com.github.raphaelpanta.partners.service
 
-import org.geojson.MultiPolygon
-import org.geojson.Point
+import com.github.raphaelpanta.partners.domain.MultiPolygon
+import com.github.raphaelpanta.partners.domain.Point
 
 data class CreatePartnerRequest(
         val tradingName: String,
