@@ -66,8 +66,15 @@ class PartnerValidationTest {
             testData.copy(ownerName = "") to ".ownerName - must have at least 1 characters",
             testData.copy(ownerName = "x".repeat(256)) to ".ownerName - must have at most 255 characters",
             testData.copy(document = "") to ".document - should be in brazilian legal document. Ex: 1432132123891/0001",
-
-            ).map { (invalid, message) ->
+            testData.copy(coverageArea = MultiPolygon(testData.coverageArea.coordinates, type = ""))
+                    to ".coverageArea.type - Should be a valid MultiPolygon geoJSON type",
+            testData.copy(address = Point(testData.address.coordinates, ""))
+                    to ".address.type - Should be a valid Point geoJson type",
+            testData.copy(address = Point(listOf(-1.0f), "Point"))
+                    to ".address.coordinates - Should be a valid Point geoJson coordinates (long, lat)",
+            testData.copy(address = Point(listOf(-1.0f, -1.0f, -1.0f), "Point"))
+                    to ".address.coordinates - Should be a valid Point geoJson coordinates (long, lat)"
+    ).map { (invalid, message) ->
         dynamicTest("Partner should be invalid for this reason: $message") {
             val result = partnerValidator.validate(invalid)
 
