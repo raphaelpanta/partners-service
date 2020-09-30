@@ -60,5 +60,4 @@ class PartnerServiceDriver {
     fun queryPartner(id: String) = runBlocking {
         client.get<PartnerResponse>("http://localhost:7000/partners/$id")
     }
-
 }

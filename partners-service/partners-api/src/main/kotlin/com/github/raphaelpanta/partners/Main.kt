@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.github.raphaelpanta.infrastructure.MongoDbPartnersRepository
+import com.github.raphaelpanta.partners.Main.serverPort
 import com.github.raphaelpanta.partners.service.PartnerKonformValidator
 import com.github.raphaelpanta.partners.service.PartnersAppService
 import io.javalin.Javalin
@@ -30,6 +31,10 @@ fun main() {
             .registerKotlinModule())
     Javalin.create()
             .routes(partnersRoutes::routes)
-            .start(7000)
+            .start(serverPort)
 
+}
+
+object Main {
+    const val serverPort = 7000
 }

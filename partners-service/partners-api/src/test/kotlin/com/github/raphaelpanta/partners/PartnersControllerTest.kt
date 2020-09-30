@@ -2,6 +2,10 @@ package com.github.raphaelpanta.partners
 
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
+import com.github.raphaelpanta.partners.HttpCodes.badRequestErrorCode
+import com.github.raphaelpanta.partners.HttpCodes.createdCode
+import com.github.raphaelpanta.partners.HttpCodes.internalServerErrorCode
+import com.github.raphaelpanta.partners.HttpCodes.okCode
 import com.github.raphaelpanta.partners.service.CreatePartnerRequest
 import com.github.raphaelpanta.partners.service.InvalidResult.InternalErrorResult
 import com.github.raphaelpanta.partners.service.InvalidResult.ValidationErrorResult
@@ -26,7 +30,7 @@ class PartnersControllerTest {
         val partnerController = PartnerController(partnerService)
 
         every { context.bodyAsClass(CreatePartnerRequest::class.java) } returns partner
-        every { context.status(201) } returns context
+        every { context.status(createdCode) } returns context
         every { context.json(partnerResponse) } returns context
         every { partnerService.create(partner) } returns partnerResp
         every { partnerResp.value } returns partnerResponse
@@ -37,7 +41,7 @@ class PartnersControllerTest {
             context.bodyAsClass(CreatePartnerRequest::class.java)
             partnerService.create(partner)
             partnerResp.value
-            context.status(201)
+            context.status(createdCode)
             context.json(partnerResponse)
         }
 
@@ -53,7 +57,7 @@ class PartnersControllerTest {
         val result = Err(ValidationErrorResult(listOf("a message")))
 
         every { context.bodyAsClass(CreatePartnerRequest::class.java) } returns partner
-        every { context.status(400) } returns context
+        every { context.status(badRequestErrorCode) } returns context
         every { context.json(result.error) } returns context
         every { partnerService.create(partner) } returns result
 
@@ -62,7 +66,7 @@ class PartnersControllerTest {
         verifyOrder {
             context.bodyAsClass(CreatePartnerRequest::class.java)
             partnerService.create(partner)
-            context.status(400)
+            context.status(badRequestErrorCode)
             context.json(result.error)
         }
 
@@ -78,7 +82,7 @@ class PartnersControllerTest {
         val result = Err(InternalErrorResult(listOf("a message")))
 
         every { context.bodyAsClass(CreatePartnerRequest::class.java) } returns partner
-        every { context.status(500) } returns context
+        every { context.status(internalServerErrorCode) } returns context
         every { context.json(result.error) } returns context
         every { partnerService.create(partner) } returns result
 
@@ -87,7 +91,7 @@ class PartnersControllerTest {
         verifyOrder {
             context.bodyAsClass(CreatePartnerRequest::class.java)
             partnerService.create(partner)
-            context.status(500)
+            context.status(internalServerErrorCode)
             context.json(result.error)
         }
 
@@ -108,7 +112,7 @@ class PartnerFindTest {
 
         every { partnerService.find(id) } returns partnerResponse
         every { context.pathParam("id") } returns id
-        every { context.status(200) } returns context
+        every { context.status(okCode) } returns context
         every { context.json(partner) } returns context
         every { partnerResponse.value } returns partner
 
@@ -118,7 +122,7 @@ class PartnerFindTest {
             context.pathParam(key = "id")
             partnerService.find(id)
             partnerResponse.value
-            context.status(200)
+            context.status(okCode)
             context.json(partner)
         }
 
@@ -137,7 +141,7 @@ class PartnerFindTest {
 
         every { partnerService.find(id) } returns partnerResponse
         every { context.pathParam("id") } returns id
-        every { context.status(400) } returns context
+        every { context.status(badRequestErrorCode) } returns context
         every { partnerResponse.error } returns validationErrorResult
         every { context.json(validationErrorResult) } returns context
 
@@ -147,7 +151,7 @@ class PartnerFindTest {
             context.pathParam(key = "id")
             partnerService.find(id)
             partnerResponse.error
-            context.status(400)
+            context.status(badRequestErrorCode)
             context.json(validationErrorResult)
         }
 
@@ -166,7 +170,7 @@ class PartnerFindTest {
 
         every { partnerService.find(id) } returns partnerResponse
         every { context.pathParam("id") } returns id
-        every { context.status(500) } returns context
+        every { context.status(internalServerErrorCode) } returns context
         every { partnerResponse.error } returns internalErrorResult
         every { context.json(internalErrorResult) } returns context
 
@@ -176,10 +180,17 @@ class PartnerFindTest {
             context.pathParam(key = "id")
             partnerService.find(id)
             partnerResponse.error
-            context.status(500)
+            context.status(internalServerErrorCode)
             context.json(internalErrorResult)
         }
 
         confirmVerified(partnerResponse, partnerService, context, partner, partnerResponse)
     }
+}
+
+object HttpCodes {
+    const val internalServerErrorCode = 500
+    const val badRequestErrorCode = 400
+    const val okCode = 200
+    const val createdCode = 201
 }

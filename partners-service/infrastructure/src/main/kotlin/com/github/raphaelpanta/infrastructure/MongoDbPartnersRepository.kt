@@ -6,7 +6,7 @@ import com.github.raphaelpanta.partners.domain.PartnersRepository
 import com.mongodb.client.MongoClient
 import org.litote.kmongo.findOne
 import org.litote.kmongo.getCollection
-import java.util.*
+import java.util.UUID
 
 class MongoDbPartnersRepository(mongoClient: MongoClient) : PartnersRepository {
     private val collection = mongoClient.getDatabase("partners")

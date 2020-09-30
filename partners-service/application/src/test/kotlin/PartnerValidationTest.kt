@@ -16,7 +16,7 @@ import java.util.UUID
 
 class PartnerValidationTest {
 
-    private val validPartnerRequest = CreatePartnerRequest(
+    private val testData = CreatePartnerRequest(
             "tradingName",
             "ownerName",
             "1432132123891/0001",
@@ -51,21 +51,21 @@ class PartnerValidationTest {
 
     @Test
     fun `should be valid`() {
-        val result = partnerValidator.validate(validPartnerRequest)
+        val result = partnerValidator.validate(testData)
 
         expectThat(result as Ok<CreatePartnerRequest>) {
             isA<Ok<CreatePartnerRequest>>()
-            get { value } isEqualTo validPartnerRequest
+            get { value } isEqualTo testData
         }
     }
 
     @TestFactory
     fun `should be not valid`() = listOf(
-            validPartnerRequest.copy("") to ".tradingName - must have at least 1 characters",
-            validPartnerRequest.copy("x".repeat(256)) to ".tradingName - must have at most 255 characters",
-            validPartnerRequest.copy(ownerName = "") to ".ownerName - must have at least 1 characters",
-            validPartnerRequest.copy(ownerName = "x".repeat(256)) to ".ownerName - must have at most 255 characters",
-            validPartnerRequest.copy(document = "") to ".document - should be in brazilian legal document. Ex: 1432132123891/0001",
+            testData.copy("") to ".tradingName - must have at least 1 characters",
+            testData.copy("x".repeat(256)) to ".tradingName - must have at most 255 characters",
+            testData.copy(ownerName = "") to ".ownerName - must have at least 1 characters",
+            testData.copy(ownerName = "x".repeat(256)) to ".ownerName - must have at most 255 characters",
+            testData.copy(document = "") to ".document - should be in brazilian legal document. Ex: 1432132123891/0001",
 
             ).map { (invalid, message) ->
         dynamicTest("Partner should be invalid for this reason: $message") {
@@ -80,7 +80,8 @@ class PartnerValidationTest {
 
     @Test
     fun `should be a UUID string id`() {
-        expectThat(partnerValidator.validate("7b2a0415-ae18-4f61-b4b1-51eb72ae9032")) {
+        val validationResult = partnerValidator.validate("7b2a0415-ae18-4f61-b4b1-51eb72ae9032")
+        expectThat(validationResult) {
             isA<Ok<UUID>>()
         }
     }

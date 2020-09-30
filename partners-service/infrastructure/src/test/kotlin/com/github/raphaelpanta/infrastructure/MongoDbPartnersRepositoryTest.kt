@@ -22,25 +22,23 @@ class MongoDbPartnersRepositoryTest {
             document = "1432132123891/0001",
             coverageArea = MultiPolygon(
                     listOf(
+
                             listOf(
                                     listOf(
-                                            listOf(
-                                                    listOf(30.0, 20.0),
-                                                    listOf(45.0, 40.0),
-                                                    listOf(10.0, 40.0),
-                                                    listOf(30.0, 20.0)
-                                            )
+                                            listOf(30.0f, 20.0f),
+                                            listOf(45.0f, 40.0f),
+                                            listOf(10.0f, 40.0f),
+                                            listOf(30.0f, 20.0f)
                                     )
+
                             ),
                             listOf(
                                     listOf(
-                                            listOf(
-                                                    listOf(15.0, 5.0),
-                                                    listOf(40.0, 10.0),
-                                                    listOf(10.0, 20.0),
-                                                    listOf(5.0, 10.0),
-                                                    listOf(15.0, 5.0)
-                                            )
+                                            listOf(15.0f, 5.0f),
+                                            listOf(40.0f, 10.0f),
+                                            listOf(10.0f, 20.0f),
+                                            listOf(5.0f, 10.0f),
+                                            listOf(15.0f, 5.0f)
                                     )
                             )
                     ),

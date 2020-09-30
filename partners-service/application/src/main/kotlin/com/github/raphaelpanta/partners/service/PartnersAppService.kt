@@ -1,6 +1,11 @@
 package com.github.raphaelpanta.partners.service
 
-import com.github.michaelbull.result.*
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.flatMap
+import com.github.michaelbull.result.map
+import com.github.michaelbull.result.mapError
 import com.github.raphaelpanta.partners.domain.Partner
 import com.github.raphaelpanta.partners.domain.PartnersRepository
 import com.github.raphaelpanta.partners.service.InvalidResult.InternalErrorResult

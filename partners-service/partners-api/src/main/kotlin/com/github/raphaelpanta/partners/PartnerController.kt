@@ -13,12 +13,12 @@ class PartnerController(private val partnerService: PartnerService) {
         context.bodyAsClass(CreatePartnerRequest::class.java)
                 .let(partnerService::create)
                 .fold({
-                    context.status(201)
+                    context.status(createdCode)
                     context.json(it)
                 }) {
                     context.status(when (it) {
-                        is InternalErrorResult -> 500
-                        is ValidationErrorResult -> 400
+                        is InternalErrorResult -> internalServerErrorCode
+                        is ValidationErrorResult -> badRequestErrorCode
                     })
                     context.json(it)
                 }
@@ -28,14 +28,21 @@ class PartnerController(private val partnerService: PartnerService) {
         context.pathParam("id")
                 .let(partnerService::find)
                 .fold({
-                    context.status(200)
+                    context.status(okCode)
                     context.json(it)
                 }) {
                     context.status(when (it) {
-                        is InternalErrorResult -> 500
-                        is ValidationErrorResult -> 400
+                        is InternalErrorResult -> internalServerErrorCode
+                        is ValidationErrorResult -> badRequestErrorCode
                     })
                     context.json(it)
                 }
+    }
+
+    companion object {
+        const val internalServerErrorCode = 500
+        const val badRequestErrorCode = 400
+        const val okCode = 200
+        const val createdCode = 201
     }
 }

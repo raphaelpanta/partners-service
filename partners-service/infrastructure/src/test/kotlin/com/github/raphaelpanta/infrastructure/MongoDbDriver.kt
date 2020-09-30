@@ -15,13 +15,13 @@ import org.litote.kmongo.KMongo
 
 class MongoDbDriver {
 
-    val mongoExecutable: MongodExecutable = MongodStarter.getDefaultInstance()
+    private val mongoExecutable: MongodExecutable = MongodStarter.getDefaultInstance()
             .prepare(MongodConfigBuilder()
                     .version(Version.V4_0_2)
                     .net(Net("localhost", 27017, Network.localhostIsIPv6())).build()
             )
 
-    val monoProcess: MongodProcess
+    private val monoProcess: MongodProcess
 
     val mongoClient: MongoClient
 
