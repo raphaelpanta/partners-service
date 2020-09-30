@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.github.raphaelpanta.infrastructure.MongoDbPartnersRepository
+import com.github.raphaelpanta.infrastructure.MongoMigrations
 import com.github.raphaelpanta.partners.Main.serverPort
 import com.github.raphaelpanta.partners.service.PartnerKonformValidator
 import com.github.raphaelpanta.partners.service.PartnersAppService
@@ -18,6 +19,7 @@ fun main() {
     val host = System.getProperty("DB_HOST")
     val port = System.getProperty("DB_PORT")
     val mongoClient = KMongo.createClient("mongodb://$host:$port")
+    MongoMigrations(mongoClient).runMigration()
     val partnersRepository = MongoDbPartnersRepository(mongoClient)
     val createPartnerValidator = PartnerKonformValidator()
     val partnerService = PartnersAppService(partnersRepository, createPartnerValidator)

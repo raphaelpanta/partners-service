@@ -15,7 +15,7 @@ class FindPartnerSteps : En {
         Given("that a partner named Adega da Cerveja - Pinheiros exists") {
             id = server.insertPartner("""{"tradingName": "Adega da Cerveja - Pinheiros",
                                       "ownerName": "Zé da Silva",
-                                      "document": "1432132123891/0001",
+                                      "document": "1432132123891/0002",
                                       "coverageArea": { 
                                         "type": "MultiPolygon", 
                                         "coordinates": [
