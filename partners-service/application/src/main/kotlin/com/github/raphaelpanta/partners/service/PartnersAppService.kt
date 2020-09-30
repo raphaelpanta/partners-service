@@ -1,12 +1,10 @@
 package com.github.raphaelpanta.partners.service
 
-import com.github.michaelbull.result.Result
-import com.github.michaelbull.result.flatMap
-import com.github.michaelbull.result.map
-import com.github.michaelbull.result.mapError
+import com.github.michaelbull.result.*
 import com.github.raphaelpanta.partners.domain.Partner
 import com.github.raphaelpanta.partners.domain.PartnersRepository
 import com.github.raphaelpanta.partners.service.InvalidResult.InternalErrorResult
+import com.github.raphaelpanta.partners.service.InvalidResult.ValidationErrorResult
 
 
 class PartnersAppService(private val partnersRepository: PartnersRepository,
@@ -22,7 +20,13 @@ class PartnersAppService(private val partnersRepository: PartnersRepository,
                     .map(Partner::toResponse)
 
     override fun find(id: String): Result<PartnerResponse, InvalidResult> {
-        TODO("Not yet implemented")
+        return partnerValidator.validate(id)
+                .flatMap {
+                    partnersRepository.find(it).mapError { e -> InternalErrorResult(listOf(e.localizedMessage)) }
+                }.flatMap {
+                    it?.let { Ok(it.toResponse()) }
+                            ?: Err(ValidationErrorResult(listOf("Partner not found")))
+                }
     }
 
 }
