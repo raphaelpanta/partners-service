@@ -221,6 +221,72 @@ class NearestPartnerTest {
 
         confirmVerified(context, service, response, response)
     }
+
+    @Test
+    fun `should not find a partner`() {
+        val context = mockk<Context>()
+        val service = mockk<PartnerService>()
+        val result = mockk<Err<ValidationErrorResult>>()
+        val response = mockk<ValidationErrorResult>()
+        val controller = PartnerController(service)
+
+        val long = "2.0"
+        val lat = "3.0"
+        val coordinates = 2.0f to 3.0f
+
+        every { context.pathParam("long") } returns long
+        every { context.pathParam("lat") } returns lat
+        every { context.status(badRequestErrorCode) } returns context
+        every { context.json(response) } returns context
+        every { result.error } returns response
+        every { service.nearestPartnerForLocation(coordinates) } returns result
+
+        controller.nearest(context)
+
+        verifyOrder {
+            context.pathParam("long")
+            context.pathParam("lat")
+            service.nearestPartnerForLocation(coordinates)
+            result.error
+            context.status(badRequestErrorCode)
+            context.json(response)
+        }
+
+        confirmVerified(context, service, response, response)
+    }
+
+    @Test
+    fun `should not find a partner due internal server error`() {
+        val context = mockk<Context>()
+        val service = mockk<PartnerService>()
+        val result = mockk<Err<InternalErrorResult>>()
+        val response = mockk<InternalErrorResult>()
+        val controller = PartnerController(service)
+
+        val long = "2.0"
+        val lat = "3.0"
+        val coordinates = 2.0f to 3.0f
+
+        every { context.pathParam("long") } returns long
+        every { context.pathParam("lat") } returns lat
+        every { context.status(internalServerErrorCode) } returns context
+        every { context.json(response) } returns context
+        every { result.error } returns response
+        every { service.nearestPartnerForLocation(coordinates) } returns result
+
+        controller.nearest(context)
+
+        verifyOrder {
+            context.pathParam("long")
+            context.pathParam("lat")
+            service.nearestPartnerForLocation(coordinates)
+            result.error
+            context.status(internalServerErrorCode)
+            context.json(response)
+        }
+
+        confirmVerified(context, service, response, response)
+    }
 }
 
 object HttpCodes {
