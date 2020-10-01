@@ -2,6 +2,7 @@ package com.github.raphaelpanta.partners
 
 import com.github.michaelbull.result.fold
 import com.github.raphaelpanta.partners.service.CreatePartnerRequest
+import com.github.raphaelpanta.partners.service.InvalidResult
 import com.github.raphaelpanta.partners.service.InvalidResult.InternalErrorResult
 import com.github.raphaelpanta.partners.service.InvalidResult.ValidationErrorResult
 import com.github.raphaelpanta.partners.service.PartnerService
@@ -39,10 +40,34 @@ class PartnerController(private val partnerService: PartnerService) {
                 }
     }
 
+    fun nearest(context: Context) {
+        context.run {
+            pathParam("long").toFloat() to pathParam("lat").toFloat()
+        }
+                .let(partnerService::nearestPartnerForLocation)
+                .fold(
+                        {
+                            context.status(okCode)
+                            context.json(it)
+                        }
+                ) { context.handleError(it) }
+    }
+
     companion object {
         const val internalServerErrorCode = 500
         const val badRequestErrorCode = 400
         const val okCode = 200
         const val createdCode = 201
+
+        fun Context.handleError(invalidResult: InvalidResult) {
+            status(
+                    when (invalidResult) {
+                        is InternalErrorResult -> internalServerErrorCode
+                        is ValidationErrorResult -> badRequestErrorCode
+                    }
+            )
+
+            json(invalidResult)
+        }
     }
 }

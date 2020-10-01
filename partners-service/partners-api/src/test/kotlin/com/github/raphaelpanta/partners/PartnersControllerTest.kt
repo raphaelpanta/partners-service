@@ -188,6 +188,41 @@ class PartnerFindTest {
     }
 }
 
+class NearestPartnerTest {
+    @Test
+    fun `should find a partner`() {
+        val context = mockk<Context>()
+        val service = mockk<PartnerService>()
+        val result = mockk<Ok<PartnerResponse>>()
+        val response = mockk<PartnerResponse>()
+        val controller = PartnerController(service)
+
+        val long = "2.0"
+        val lat = "3.0"
+        val coordinates = 2.0f to 3.0f
+
+        every { context.pathParam("long") } returns long
+        every { context.pathParam("lat") } returns lat
+        every { context.status(okCode) } returns context
+        every { context.json(response) } returns context
+        every { result.value } returns response
+        every { service.nearestPartnerForLocation(coordinates) } returns result
+
+        controller.nearest(context)
+
+        verifyOrder {
+            context.pathParam("long")
+            context.pathParam("lat")
+            service.nearestPartnerForLocation(coordinates)
+            result.value
+            context.status(okCode)
+            context.json(response)
+        }
+
+        confirmVerified(context, service, response, response)
+    }
+}
+
 object HttpCodes {
     const val internalServerErrorCode = 500
     const val badRequestErrorCode = 400
