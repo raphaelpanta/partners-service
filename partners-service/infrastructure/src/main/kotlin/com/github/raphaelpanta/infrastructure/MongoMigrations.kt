@@ -16,7 +16,6 @@ class MongoMigrations(private val client: MongoClient) {
             createIndex(Indexes.ascending("id"), IndexOptions().unique(true))
             createIndex(Indexes.ascending("document"), IndexOptions().unique(true))
             createIndex(Indexes.geo2dsphere("address"))
-            createIndex(Indexes.geo2dsphere("coverageArea"))
         }
 
     }

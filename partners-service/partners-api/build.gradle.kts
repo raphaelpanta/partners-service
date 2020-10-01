@@ -51,6 +51,7 @@ dependencies {
     endToEndTestImplementation("io.ktor:ktor-client-cio-jvm:1.4.1")
     endToEndTestImplementation("io.ktor:ktor-client-jackson:1.4.1")
     endToEndTestImplementation("io.ktor:ktor-client-serialization-jvm:1.4.1")
+    endToEndTestImplementation("io.ktor:ktor-client-logging-jvm:1.4.1")
     endToEndTestImplementation("org.testcontainers:testcontainers:1.14.3")
     endToEndTestImplementation("org.testcontainers:mongodb:1.14.3")
 }

@@ -7,7 +7,10 @@ import io.javalin.apibuilder.ApiBuilder.post
 class PartnersRoutes(private val partnerController: PartnerController) {
 
     fun routes() = path("/partners") {
-        post("/", partnerController::create)
-        get("/:id", partnerController::find)
+        with(partnerController) {
+            post("/", ::create)
+            get("/:id", ::find)
+            get("/:long/:lat", ::nearest)
+        }
     }
 }

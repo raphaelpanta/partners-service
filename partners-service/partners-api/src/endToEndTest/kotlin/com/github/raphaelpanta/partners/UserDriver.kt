@@ -8,6 +8,7 @@ import com.github.raphaelpanta.partners.service.CreatePartnerRequest
 class UserDriver {
     private val map = HashMap<String, Any>()
     private val coverageArea = mutableListOf<List<List<List<Float>>>>()
+    private lateinit var coordinates: Pair<Double, Double>
 
     fun inputTradingName(tradingName: String) {
         map["tradingName"] = tradingName
@@ -32,6 +33,12 @@ class UserDriver {
                 }
         ))
     }
+
+    fun inputCoordinates(long: Double, lat: Double) {
+        coordinates = long to lat
+    }
+
+    fun coordinates() = coordinates
 
     fun requested() = map.let {
         CreatePartnerRequest(

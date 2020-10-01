@@ -3,7 +3,7 @@ Feature: Creating a Partner
   Scenario: Partner created successfully
     Given a partner named "Adega da Cerveja - Pinheiros"
     And its owner named "Zé da Silva"
-    And its brazilian legal document is "1432132123891/0001"
+    And its brazilian legal document is "1432132123891/0002"
     And its coverage area is a MultiPolygon with coordinates
       | 30.0 | 20.0 |
       | 45.0 | 40.0 |

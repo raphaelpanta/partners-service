@@ -3,6 +3,8 @@ package com.github.raphaelpanta.partners
 import com.github.raphaelpanta.partners.CreatePartnerTest.Companion.server
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.En
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 class CreatePartnerSteps() : En {
 
@@ -33,7 +35,9 @@ class CreatePartnerSteps() : En {
         Then("Partner should be created successfully") {
             val createPartner = user.requested()
 
-            server.processRequest(createPartner)
+            val response = server.processRequest(createPartner)
+
+            expectThat(response.copy(id = "")).isEqualTo(createPartnerResponse)
         }
     }
 }

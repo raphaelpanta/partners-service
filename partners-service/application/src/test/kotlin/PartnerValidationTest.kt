@@ -65,7 +65,6 @@ class PartnerValidationTest {
             testData.copy("x".repeat(256)) to ".tradingName - must have at most 255 characters",
             testData.copy(ownerName = "") to ".ownerName - must have at least 1 characters",
             testData.copy(ownerName = "x".repeat(256)) to ".ownerName - must have at most 255 characters",
-            testData.copy(document = "") to ".document - should be in brazilian legal document. Ex: 1432132123891/0001",
             testData.copy(coverageArea = MultiPolygon(testData.coverageArea.coordinates, type = ""))
                     to ".coverageArea.type - Should be a valid MultiPolygon geoJSON type",
             testData.copy(address = Point(testData.address.coordinates, ""))

@@ -29,10 +29,6 @@ class PartnerKonformValidator : PartnerValidator {
             maxLength(maxStringLength)
         }
 
-        CreatePartnerRequest::document required {
-            pattern("\\d{13}/\\d{4}") hint brazilianLegalDocumentMessage
-        }
-
         CreatePartnerRequest::coverageArea {
             MultiPolygon::type required {
                 addConstraint("Should be a valid MultiPolygon geoJSON type") {
