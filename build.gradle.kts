@@ -20,6 +20,7 @@ plugins {
     kotlin("jvm") version "1.4.10"
     id("io.gitlab.arturbosch.detekt").version("1.14.0")
     jacoco
+    id("com.github.johnrengelman.shadow") version "6.0.0"
 }
 
 detekt {
@@ -59,11 +60,11 @@ allprojects {
     }
 }
 
-
 subprojects {
     apply {
         plugin("io.gitlab.arturbosch.detekt")
         plugin("jacoco")
+        plugin("com.github.johnrengelman.shadow")
     }
 
     detekt {
@@ -158,3 +159,14 @@ tasks.jacocoTestCoverageVerification {
     }
 }
 
+shadow {
+    dependencies {
+        implementation(project(":partners-service:partners-api"))
+    }
+}
+
+tasks.withType<Jar>(){
+    manifest{
+        attributes["Main-Class"] = "com.github.raphaelpanta.partners.MainKt"
+    }
+}

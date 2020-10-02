@@ -1,4 +1,4 @@
-package com.github.raphaelpanta.partners
+package com.github.raphaelpanta.partners.drivers
 
 import com.github.raphaelpanta.partners.domain.MultiPolygon
 import com.github.raphaelpanta.partners.domain.Point

@@ -1,4 +1,4 @@
-package com.github.raphaelpanta.partners
+package com.github.raphaelpanta.partners.steps
 
 import com.github.raphaelpanta.partners.CreatePartnerTest.Companion.server
 import com.github.raphaelpanta.partners.service.PartnerResponse

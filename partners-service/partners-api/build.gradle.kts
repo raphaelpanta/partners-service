@@ -54,6 +54,7 @@ dependencies {
     endToEndTestImplementation("io.ktor:ktor-client-logging-jvm:1.4.1")
     endToEndTestImplementation("org.testcontainers:testcontainers:1.14.3")
     endToEndTestImplementation("org.testcontainers:mongodb:1.14.3")
+    endToEndTestImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.2.0")
 }
 
 tasks.check { dependsOn(endToEndTestTask) }
