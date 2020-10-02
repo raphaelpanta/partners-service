@@ -16,8 +16,8 @@ import org.litote.kmongo.KMongo
 
 fun main() {
 
-    val host = System.getProperty("DB_HOST")
-    val port = System.getProperty("DB_PORT")
+    val host = System.getenv("DB_HOST") ?: System.getProperty("DB_HOST")
+    val port = System.getenv("DB_PORT") ?: System.getProperty("DB_PORT")
     val mongoClient = KMongo.createClient("mongodb://$host:$port")
     MongoMigrations(mongoClient).runMigration()
     val partnersRepository = MongoDbPartnersRepository(mongoClient)
