@@ -37,13 +37,15 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("com.fasterxml.jackson.core:jackson-core:2.11.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2")
-    implementation("io.javalin:javalin:3.10.1")
-    implementation("org.slf4j:slf4j-simple:1.7.30")
+    implementation("io.javalin:javalin-bundle:3.10.1") {
+        exclude("org.webjars")
+    }
     implementation("org.litote.kmongo:kmongo:4.1.2")
     implementation(project(":partners-service:application"))
     implementation(project(":partners-service:domain"))
     implementation(project(":partners-service:infrastructure"))
     implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.9")
+    implementation("org.webjars:swagger-ui:3.25.2")
 
     testImplementation("io.mockk:mockk:1.10.2")
     endToEndTestImplementation("io.cucumber:cucumber-java8:6.8.0")

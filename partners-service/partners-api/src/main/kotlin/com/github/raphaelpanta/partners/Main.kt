@@ -31,10 +31,14 @@ fun main() {
             .configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, true)
             .configure(MapperFeature.ALLOW_COERCION_OF_SCALARS, true)
             .registerKotlinModule())
-    Javalin.create()
+    Javalin.create {
+        it.enableDevLogging()
+        it.registerPlugin(openApiOptions())
+        it.defaultContentType = "application/json"
+        it.showJavalinBanner = false
+    }
             .routes(partnersRoutes::routes)
             .start(serverPort)
-
 }
 
 object Main {
