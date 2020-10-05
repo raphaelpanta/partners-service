@@ -165,8 +165,35 @@ shadow {
     }
 }
 
-tasks.withType<Jar>(){
-    manifest{
+tasks.withType<Jar> {
+    manifest {
         attributes["Main-Class"] = "com.github.raphaelpanta.partners.MainKt"
+    }
+}
+
+tasks.register<JacocoReport>("codeCoverageReport") {
+    dependsOn(subprojects.map { it.tasks.withType<Test>() })
+    dependsOn(subprojects.map { it.tasks.withType<JacocoReport>() })
+
+    subprojects {
+        val subproject = this
+        subproject.plugins.withType<JacocoPlugin>().configureEach {
+            subproject.tasks.matching { it.extensions.findByType<JacocoTaskExtension>() != null }
+                    .configureEach {
+                        val testTask = this
+                            val sourceSet = subproject.sourceSets.main.get()
+                            sourceSets(sourceSet)
+                            executionData(testTask)
+                    }
+
+            subproject.tasks.matching { it.extensions.findByType<JacocoTaskExtension>() != null }.forEach {
+                rootProject.tasks["codeCoverageReport"].dependsOn(it)
+            }
+        }
+    }
+
+    reports {
+        xml.isEnabled = false
+        html.isEnabled = true
     }
 }
