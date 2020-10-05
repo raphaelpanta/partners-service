@@ -47,7 +47,6 @@ dependencies {
     implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.9")
     implementation("org.webjars:swagger-ui:3.25.2")
 
-    testImplementation("io.mockk:mockk:1.10.2")
     endToEndTestImplementation("io.cucumber:cucumber-java8:6.8.0")
     endToEndTestImplementation("io.cucumber:cucumber-junit-platform-engine:6.8.0")
     endToEndTestImplementation("io.ktor:ktor-client-cio-jvm:1.4.1")

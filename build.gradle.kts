@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_JAVA
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
@@ -47,6 +48,7 @@ allprojects {
             testImplementation(platform("org.junit:junit-bom:5.7.0"))
             testImplementation("org.junit.jupiter:junit-jupiter")
             testImplementation("io.strikt:strikt-core:0.28.0")
+            testImplementation("io.mockk:mockk:1.10.2")
 
             useJUnitPlatform()
             testLogging {
@@ -165,6 +167,10 @@ shadow {
     }
 }
 
+tasks.withType<ShadowJar> {
+    mergeServiceFiles()
+}
+
 tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = "com.github.raphaelpanta.partners.MainKt"
@@ -181,9 +187,9 @@ tasks.register<JacocoReport>("codeCoverageReport") {
             subproject.tasks.matching { it.extensions.findByType<JacocoTaskExtension>() != null }
                     .configureEach {
                         val testTask = this
-                            val sourceSet = subproject.sourceSets.main.get()
-                            sourceSets(sourceSet)
-                            executionData(testTask)
+                        val sourceSet = subproject.sourceSets.main.get()
+                        sourceSets(sourceSet)
+                        executionData(testTask)
                     }
 
             subproject.tasks.matching { it.extensions.findByType<JacocoTaskExtension>() != null }.forEach {
