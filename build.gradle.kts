@@ -197,3 +197,8 @@ tasks.register<JacocoReport>("codeCoverageReport") {
         html.isEnabled = true
     }
 }
+
+tasks.check {
+    dependsOn(detektAll)
+    finalizedBy("codeCoverageReport")
+}

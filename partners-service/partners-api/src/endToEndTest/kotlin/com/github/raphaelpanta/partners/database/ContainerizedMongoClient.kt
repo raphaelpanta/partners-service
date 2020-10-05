@@ -8,7 +8,7 @@ class ContainerizedMongoClient : AutoCloseable {
 
     private val mongoDBContainer = MongoDBContainer("mongo:4.4.1")
             .apply {
-                withExposedPorts(27017, 27017)
+                withExposedPorts(port, port)
             }
 
     val mongoClient by lazy {
@@ -25,5 +25,9 @@ class ContainerizedMongoClient : AutoCloseable {
 
     override fun close() {
         mongoDBContainer.close()
+    }
+
+    companion object {
+        const val port = 27017
     }
 }

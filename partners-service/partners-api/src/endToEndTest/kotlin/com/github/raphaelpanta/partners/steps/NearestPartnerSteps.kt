@@ -1,6 +1,6 @@
 package com.github.raphaelpanta.partners.steps
 
-import com.github.raphaelpanta.partners.CreatePartnerTest.Companion.server
+import com.github.raphaelpanta.partners.CreatePartnerTest.server
 import com.github.raphaelpanta.partners.drivers.UserDriver
 import io.cucumber.java8.En
 import strikt.api.expectThat

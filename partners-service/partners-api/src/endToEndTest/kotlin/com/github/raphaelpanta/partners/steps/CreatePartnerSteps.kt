@@ -1,17 +1,16 @@
 package com.github.raphaelpanta.partners.steps
 
-import com.github.raphaelpanta.partners.CreatePartnerTest.Companion.server
+import com.github.raphaelpanta.partners.CreatePartnerTest.server
 import com.github.raphaelpanta.partners.drivers.UserDriver
-import com.github.raphaelpanta.partners.fixtures.createPartnerResponse
+import com.github.raphaelpanta.partners.fixtures.TestData.createPartnerResponse
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.En
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-class CreatePartnerSteps() : En {
+class CreatePartnerSteps : En {
 
     private val user = UserDriver()
-
 
     init {
         Given("a partner named {string}") { name: String ->
@@ -41,5 +40,6 @@ class CreatePartnerSteps() : En {
 
             expectThat(response.copy(id = "")).isEqualTo(createPartnerResponse)
         }
+
     }
 }

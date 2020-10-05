@@ -15,7 +15,7 @@ class EmbeddedMongoClient : AutoCloseable {
     private val mongoExecutable: MongodExecutable = MongodStarter.getDefaultInstance()
             .prepare(MongodConfigBuilder()
                     .version(Version.V4_0_2)
-                    .net(Net("localhost", 27017, Network.localhostIsIPv6())).build()
+                    .net(Net("localhost", port, Network.localhostIsIPv6())).build()
             )
 
     private val monoProcess: MongodProcess
@@ -36,6 +36,10 @@ class EmbeddedMongoClient : AutoCloseable {
     override fun close() {
         monoProcess.stop()
         mongoExecutable.stop()
+    }
+
+    companion object {
+        const val port = 27017
     }
 
 }
